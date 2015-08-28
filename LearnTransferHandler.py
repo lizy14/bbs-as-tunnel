@@ -1,16 +1,9 @@
 import urllib
 import urllib.request
 import urllib.parse
+from LearnPageParser import LearnPageParser
 
-class transferHandler:
-	bbs_id = ''
-	course_id = ''
-	talk_id = ''
-	userid = ''
-	userpass = ''
-	
-	opener = urllib.request.build_opener(
-		urllib.request.HTTPCookieProcessor())
+class LearnTransferHandler:
 	baseURL = '://learn.tsinghua.edu.cn/MultiLanguage/'
 	
 	def login(self):
@@ -23,6 +16,13 @@ class transferHandler:
 		self.opener.open(loginURL,loginPostData.encode())
 		
 	def __init__(self, userid, userpass, bbs_id, course_id, talk_id):
+		self.userid = userid
+		self.userpass = userpass
+		self.bbs_id = bbs_id
+		self.course_id = course_id
+		self.talk_id = talk_id
+		self.opener = urllib.request.build_opener(
+			urllib.request.HTTPCookieProcessor())
 		self.login()
 		
 	def get(self):
@@ -35,7 +35,7 @@ class transferHandler:
 			'up_url'   :'talk_list_student.jsp',
 			'default_cate_id':'1'
 		})
-		return self.opener.open(getURL).read()
+		return LearnPageParser.do(self.opener.open(getURL).read().decode())
 		
 	def post(self,data):
 		postURL = 'http'+self.baseURL+'public/bbs/bbs_talk_reply_submit.jsp'
