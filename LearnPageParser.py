@@ -10,12 +10,14 @@ class LearnPageParser:
 				author = re.search('<td width="33%" class="tr2">(.+)?</td>',postHTML).group(1)
 				time = re.search('<td width="20%" class="tr2">(.+?)</td>',postHTML,re.DOTALL).group(1).strip()			
 				content = re.search('<td colspan="4" class="tr_2" align="left" valign="middle"><p align="left">([^<]*)</p>',postHTML,re.DOTALL).group(1).strip()
+				id = re.search('note_id=(\d+)',postHTML,re.DOTALL).group(1)
 			except:
 				continue
 			post = {
 				'author':author,
 				'time':time,
-				'content':content
+				'content':content,
+				'id':id
 			}
 			posts.append(post)
 		return posts
